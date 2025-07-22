@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
     "html:target/cucumber-html-reports/cucumber-html-reports.html", // HTML report
     "junit:target/cucumber-report/cucumber.xml" // JUnit XML report
 }, glue = {"cost.steps"}, // Path to step definitions
-        features = "src/test/resources/features", // Path to feature files
+        features = "src/main/feature", // Path to feature files
         tags = "not @ignore" // Exclude scenarios tagged with @ignore
 )
 public class RunCucumberTest {

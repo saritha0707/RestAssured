@@ -1,4 +1,4 @@
-name: User-Journeys
+name: API- Execution
 
 on:
   workflow_dispatch:
@@ -14,43 +14,13 @@ on:
         required: true
         default: "@tag1"
 
-  schedule:
-    - cron: '30 20 * * 1-5' # Runs at 8:30 PM UTC, Monday to Friday
+  #schedule:
+  #  - cron: '30 20 * * 1-5' # Runs at 8:30 PM UTC, Monday to Friday
 
 jobs:
   CustomExecution:
-    uses: albertsons/esgh-central-workflow-aut/.github/workflows/maven-automation.yml@v5
     with:
       javaVersion: 17
       mavenVersion: "3.8.8"
-      args: 'chromedriver --version; google-chrome --version; mvn -v; mvn clean test -DnewCookies=true -Denv="${{ inputs.ENVIRONMENT }}" -Dcucumber.filter.tags="${{ inputs.TAGS }}"'
+      args: 'mvn clean test -DnewCookies=true -Denv="${{ inputs.ENVIRONMENT }}" -Dcucumber.filter.tags="${{ inputs.TAGS }}"'
       reports_folder: 'target/cucumber-html-reports'
-
-#   sending-email:
-#     needs: CustomExecution
-#     if: always()
-#     uses: albertsons/esgh-central-workflow-aks/.github/workflows/Send_Email_Attachment.yml@v4
-#     with:
-#       EMAIL_TO: Cost.Mgt.QA@albertsons.com
-#       EMAIL_ATTACHMENT: ./target/cucumber-html-reports/overview-features.html
-#       EMAIL_FROM: no.reply@safeway.com
-#       EMAIL_SUBJECT: "${{ github.repository }} : '${{ github.event.inputs.ENVIRONMENT }}' Test Reports for '${{ github.workflow }}', Run: '${{ github.run_number }}']"
-#       EMAIL_BODY: "Attached ${{ github.event.inputs.ENVIRONMENT }} test reports for ${{ github.workflow }} run ${{ github.run_number }} in ${{ github.repository }} and can be accessed via https://pages.github.albertsons.com/albertsons/mecost-UI-Automation/docs/target/cucumber-html-reports/overview-features.html"
-#       FILES: ReportArtifacts
-#     secrets:
-#       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#       EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-#       EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-
-#   publish-githubpages:
-#     needs: CustomExecution
-#     if: always()
-#     uses: albertsons/esgh-central-workflow-aut/.github/workflows/publish_github_pages.yml@v4
-#     with:
-#       repo_name: 'albertsons/mecost-ui-automation'
-#       FILES: 'ReportArtifacts'
-#       publish_files: 'mecost-ui-automation.tar.gz'
-#       run_number: ${{ github.run_number }}
-#       entry_file: 'overview-tags.html'
-#     secrets:
-#       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
